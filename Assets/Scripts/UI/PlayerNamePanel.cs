@@ -1,19 +1,43 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+
+/// <summary>
+/// Second panel affiché après la sélection de classe.
+/// Le joueur saisit son pseudo puis confirme.
+/// </summary>
 public class PlayerNamePanel : MonoBehaviour
 {
-    [SerializeField] private SO_PlayersDatas playersDatas;
-    [SerializeField] private TMP_InputField playerInputField;
+    [Header("Données")]
+    [SerializeField] private SO_PlayersDatas _playersDatas;
 
-    public void LoadDatasInPanel()
+    [Header("Pseudo")]
+    [SerializeField] private TMP_InputField _nameInputField;
+
+    [Header("Bouton de confirmation")]
+    [SerializeField] private Button _confirmButton;
+
+    [Header("Panel")]
+    [SerializeField] private GameObject _panel;
+
+    private void OnEnable()
     {
-        playerInputField.text = playersDatas.Name;
+        _nameInputField.text = _playersDatas.Name;
     }
 
-    public void SaveDataInSO()
+    private void Start()
     {
-        playersDatas.Name = playerInputField.text;
+        _confirmButton.onClick.AddListener(Confirm);
     }
-    
+
+    /// <summary>Valide le pseudo, sauvegarde et ferme le panel.</summary>
+    public void Confirm()
+    {
+        if (string.IsNullOrWhiteSpace(_nameInputField.text)) return;
+
+        _playersDatas.Name = _nameInputField.text.Trim();
+        _playersDatas.SaveDatas();
+
+        _panel.SetActive(false);
+    }
 }

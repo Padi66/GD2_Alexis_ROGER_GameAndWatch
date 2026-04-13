@@ -14,7 +14,13 @@ public enum AudioType
     ButtonClick,
     TouchObject,
     BackgroundMusic,
-    GameOver
+    GameOver,
+    HackNodeNormal,
+    HackNodeBonus,
+    HackNodeMalus,
+    HackNodeGoal,
+    BossExplosion,
+    BossFall
 }
 
 [System.Serializable]

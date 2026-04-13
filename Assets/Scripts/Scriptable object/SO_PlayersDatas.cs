@@ -1,46 +1,45 @@
 using UnityEngine;
 
+public enum PlayerClass { Hacker, Infiltrateur }
+
 [CreateAssetMenu(fileName = "SO_PlayersDatas", menuName = "Scriptable Objects/SO_PlayersDatas")]
 public class SO_PlayersDatas : ScriptableObject
 {
     public string Name;
     public int Score;
     public int Level;
-    
+    public PlayerClass Class;
+
     private SaveController saveSystem;
 
+    /// <summary>Charge les données depuis le fichier de sauvegarde.</summary>
     public void LoadDatas()
     {
         CheckSaveSystem();
-        //utiliser la fonction de savesystem pour load les data
-        //cette fonction renvoi des playersdatas
         PlayerDatas datas = saveSystem.Load();
-        //donc je dois les affecter aux variable de mon scriptable object
-        Name = datas.Name;
-        Score =  datas.Score;
+        Name  = datas.Name;
+        Score = datas.Score;
         Level = datas.Level;
+        Class = (PlayerClass)datas.Class;
     }
 
+    /// <summary>Sauvegarde les données dans le fichier de sauvegarde.</summary>
     public void SaveDatas()
     {
         CheckSaveSystem();
-        //pour utiliser la fonction save de savesystem j'ai besoin de playerdatas
-        //je dois créer un playerdatas à partir de mon SO
-        PlayerDatas datas = new PlayerDatas();
-        datas.Name = Name;
-        datas.Score = Score;
-        datas.Level = Level;
-        //j'envois ça à la fonction save de savesystem
+        PlayerDatas datas = new PlayerDatas
+        {
+            Name  = Name,
+            Score = Score,
+            Level = Level,
+            Class = (int)Class
+        };
         saveSystem.Save(datas);
     }
 
     private void CheckSaveSystem()
     {
-        //vérifie si SaveSystem est vide
         if (saveSystem == null)
-        {
             saveSystem = new SaveController();
-        }
-    
     }
 }
