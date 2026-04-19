@@ -84,6 +84,10 @@ public class hackGame : MonoBehaviour
     [Tooltip("Amplitude du déplacement en pixels.")]
     public float shakeMagnitude = 12f;
 
+    [Header("Score Save")]
+    public SO_ScoreDatas scoreDatas;
+    public string currentDifficulty = "Normal";
+
     [Header("Audio")]
     public AudioEventDispatcher audioDispatcher;
 
@@ -465,6 +469,9 @@ public class hackGame : MonoBehaviour
     {
         hackActive = false;
         dialogueTrigger?.OnBossDefeated();
+
+        if (scoreDatas != null)
+            scoreDatas.SetJeu3Moves(_gridCount, currentDifficulty);
 
         if (victoryPanel != null)
             victoryPanel.SetActive(true);

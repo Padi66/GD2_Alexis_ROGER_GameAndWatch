@@ -14,4 +14,10 @@ public class MenuManager : MonoBehaviour
     {
         panel.SetActive(false);
     }
+
+    /// <summary>Active le panel passé en paramètre.</summary>
+    public void OpenPanel(GameObject panel)
+    {
+        panel.SetActive(true);
+    }
 }

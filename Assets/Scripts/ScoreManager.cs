@@ -13,7 +13,11 @@ public class ScoreManager : MonoBehaviour
 {
     [SerializeField] private int _currentScore = 0;
     [SerializeField] private List<ScoreMilestone> _milestones = new List<ScoreMilestone>();
-    [SerializeField] private AudioEventDispatcher _audioEventDispatcher; // 🔊 AJOUT
+    [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
+
+    [Header("Score Save")]
+    [SerializeField] private SO_ScoreDatas _scoreDatas;
+    [SerializeField] private string _difficulty = "Normal";
 
     public event Action<int> OnScoreChanged;
     public event Action<string> OnMilestoneReached;
@@ -38,11 +42,34 @@ public class ScoreManager : MonoBehaviour
         CheckMilestones();
     }
     
+    private void OnDestroy()
+    {
+        SaveScore();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveScore();
+    }
+
     public void ResetScore()
     {
         _currentScore = 0;
         _triggeredMilestones.Clear();
         OnScoreChanged?.Invoke(_currentScore);
+    }
+
+    /// <summary>Sauvegarde le score courant dans SO_ScoreDatas (appeler en fin de partie).</summary>
+    public void SaveScore()
+    {
+        if (_scoreDatas != null)
+            _scoreDatas.SetJeu1Score(_currentScore, _difficulty);
+    }
+
+    /// <summary>Définit la difficulté courante (pour la sauvegarde du score).</summary>
+    public void SetDifficulty(string difficulty)
+    {
+        _difficulty = difficulty;
     }
 
     private void CheckMilestones()

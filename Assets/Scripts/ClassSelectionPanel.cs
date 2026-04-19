@@ -11,6 +11,7 @@ public class ClassSelectionPanel : MonoBehaviour
 {
     [Header("Données")]
     [SerializeField] private SO_PlayersDatas _playersDatas;
+    [SerializeField] private SO_ScoreDatas   _scoreDatas;
 
     [Header("Pseudo")]
     [SerializeField] private TMP_InputField _nameInputField;
@@ -27,20 +28,10 @@ public class ClassSelectionPanel : MonoBehaviour
 
     [Header("Navigation")]
     [SerializeField] private Button _confirmButton;
-    [Tooltip("Panel à ouvrir après confirmation.")]
-    [SerializeField] private GameObject _nextPanel;
 
     private PlayerClass _selectedClass = PlayerClass.Hacker;
     private Vector2 _hackerImageSize;
     private Vector2 _infiltrateurImageSize;
-
-    private void Awake()
-    {
-        gameObject.SetActive(true);
-
-        if (_nextPanel != null)
-            _nextPanel.SetActive(false);
-    }
 
     private void Start()
     {
@@ -56,6 +47,13 @@ public class ClassSelectionPanel : MonoBehaviour
         _confirmButton.onClick.AddListener(Confirm);
 
         RefreshImages();
+
+        // Charge les scores du pseudo existant dès le démarrage.
+        if (!string.IsNullOrWhiteSpace(_playersDatas.Name))
+        {
+            _scoreDatas?.LoadScores(_playersDatas.Name);
+            gameObject.SetActive(false);
+        }
     }
 
     /// <summary>Sélectionne une classe et met à jour le sprite des images.</summary>
@@ -65,19 +63,33 @@ public class ClassSelectionPanel : MonoBehaviour
         RefreshImages();
     }
 
-    /// <summary>Valide le pseudo et la classe, sauvegarde et ouvre le panel suivant.</summary>
+    /// <summary>Ouvre le panel.</summary>
+    public void Open()
+    {
+        gameObject.SetActive(true);
+    }
+
+    /// <summary>Valide le pseudo et la classe, sauvegarde et ferme le panel.</summary>
     public void Confirm()
     {
         if (string.IsNullOrWhiteSpace(_nameInputField.text)) return;
 
-        _playersDatas.Name  = _nameInputField.text.Trim();
+        string newPseudo = _nameInputField.text.Trim();
+        bool pseudoChanged = !string.Equals(newPseudo, _playersDatas.Name, System.StringComparison.OrdinalIgnoreCase);
+
+        _playersDatas.Name  = newPseudo;
         _playersDatas.Class = _selectedClass;
         _playersDatas.SaveDatas();
 
-        gameObject.SetActive(false);
+        // Si le pseudo a changé, on charge les scores du nouveau pseudo.
+        // S'il n'en a pas encore, les scores seront remis à zéro.
+        // Si le joueur remet son ancien pseudo, ses anciens scores seront restaurés.
+        if (_scoreDatas != null && pseudoChanged)
+            _scoreDatas.LoadScores(newPseudo);
+        else
+            _scoreDatas?.SetCurrentPseudo(newPseudo);
 
-        if (_nextPanel != null)
-            _nextPanel.SetActive(true);
+        gameObject.SetActive(false);
     }
 
     private void RefreshImages()

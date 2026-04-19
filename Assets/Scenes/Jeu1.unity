@@ -10962,6 +10962,8 @@ MonoBehaviour:
   - scoreThreshold: 200
     message: "Code de s\xE9curit\xE9: \"1548\""
   _audioEventDispatcher: {fileID: 11400000, guid: 167538dadcfad7448af49867e5f210e9, type: 2}
+  _scoreDatas: {fileID: 11400000, guid: 411812cbd17d2c04990ab798f71a02a4, type: 2}
+  _difficulty: Progressif
 --- !u!4 &1351911738
 Transform:
   m_ObjectHideFlags: 0

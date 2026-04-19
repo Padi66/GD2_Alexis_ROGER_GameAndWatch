@@ -11,6 +11,11 @@ public class GameplayDialogueTrigger : MonoBehaviour
     [SerializeField] private hackGame _hackGame;
     [SerializeField] private BossVictoryEffect _bossVictoryEffect;
 
+    [Header("Fond boss pendant le dialogue d'intro")]
+    [SerializeField] private GameObject _dialogueBossBackground;
+    [SerializeField] private GameObject _dialogueBack;
+    [SerializeField] private GameObject _bossBack;
+
     [Header("Séquence 1 — Intro (après Start)")]
     public DialogueLine[] introLines;
 
@@ -40,8 +45,16 @@ public class GameplayDialogueTrigger : MonoBehaviour
         _phase2Triggered = false;
         _phase3Triggered = false;
 
+        if (_dialogueBossBackground != null) _dialogueBossBackground.SetActive(true);
+        if (_dialogueBack           != null) _dialogueBack.SetActive(true);
+        if (_bossBack               != null) _bossBack.SetActive(true);
+
         _dialogueSystem.StartDialogue(introLines, () =>
         {
+            if (_dialogueBossBackground != null) _dialogueBossBackground.SetActive(false);
+            if (_dialogueBack           != null) _dialogueBack.SetActive(false);
+            if (_bossBack               != null) _bossBack.SetActive(false);
+
             _hackGame.LaunchGame();
         });
     }

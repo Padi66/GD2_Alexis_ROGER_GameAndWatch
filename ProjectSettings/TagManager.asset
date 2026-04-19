@@ -50,5 +50,8 @@ TagManager:
   - name: Decors
     uniqueID: 3976073923
     locked: 0
+  - name: HUD
+    uniqueID: 421486571
+    locked: 0
   m_RenderingLayers:
   - Default

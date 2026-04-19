@@ -55,14 +55,17 @@ public class HackDifficultyManager : MonoBehaviour
             case HackDifficulty.Easy:
                 _hackGame.minMaxTime = _easyMinTime;
                 _hackGame.SetEnemyHealth(_easyBossHealth);
+                _hackGame.currentDifficulty = "Facile";
                 break;
             case HackDifficulty.Hard:
                 _hackGame.minMaxTime = _hardMinTime;
                 _hackGame.SetEnemyHealth(_hardBossHealth);
+                _hackGame.currentDifficulty = "Difficile";
                 break;
             default:
                 _hackGame.minMaxTime = _normalMinTime;
                 _hackGame.SetEnemyHealth(_normalBossHealth);
+                _hackGame.currentDifficulty = "Normal";
                 break;
         }
 
