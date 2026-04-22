@@ -33,6 +33,9 @@ public class PuzzleCircle : MonoBehaviour
     [Header("Score Save")]
     [SerializeField] private SO_ScoreDatas _scoreDatas;
 
+    [Header("Audio")]
+    [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
+
     private string _currentDifficulty = "Normal";
 
     private const float TimerEasy   = -1f;
@@ -197,6 +200,7 @@ public class PuzzleCircle : MonoBehaviour
             currentTarget = lightIndex;
             lights[currentTarget].color = activeColor;
             lightsActivated = 1;
+            _audioEventDispatcher?.PlayAudio(AudioType.TouchObject);
             return;
         }
 
@@ -207,6 +211,7 @@ public class PuzzleCircle : MonoBehaviour
             currentTarget = nextTarget;
             lights[currentTarget].color = activeColor;
             lightsActivated++;
+            _audioEventDispatcher?.PlayAudio(AudioType.TouchObject);
 
             if (lightsActivated >= 8)
             {
@@ -248,6 +253,7 @@ public class PuzzleCircle : MonoBehaviour
             for (int i = 0; i < lights.Length; i++)
             {
                 lights[i].color = blinkColor;
+                _audioEventDispatcher?.PlayAudio(AudioType.TouchObject);
                 yield return new WaitForSeconds(blinkInterval);
             }
 

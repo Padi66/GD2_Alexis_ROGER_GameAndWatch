@@ -816,7 +816,7 @@ MonoBehaviour:
   shakeMagnitude: 12
   scoreDatas: {fileID: 11400000, guid: 411812cbd17d2c04990ab798f71a02a4, type: 2}
   currentDifficulty: Normal
-  audioDispatcher: {fileID: 11400000, guid: 167538dadcfad7448af49867e5f210e9, type: 2}
+  audioDispatcher: {fileID: 11400000, guid: a971383d6ab22f043872a72cb5267f9e, type: 2}
   dialogueTrigger: {fileID: 1866247832}
 --- !u!4 &247590836
 Transform:
@@ -2161,6 +2161,7 @@ GameObject:
   - component: {fileID: 579548381}
   - component: {fileID: 579548378}
   - component: {fileID: 579548382}
+  - component: {fileID: 579548383}
   m_Layer: 0
   m_Name: AudioManager
   m_TagString: Untagged
@@ -2180,7 +2181,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1aa4e2a8d776824c8733d0665416f66, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioEventManager
-  _audioEventDispatcher: {fileID: 11400000, guid: 167538dadcfad7448af49867e5f210e9, type: 2}
+  _audioEventDispatcher: {fileID: 11400000, guid: a971383d6ab22f043872a72cb5267f9e, type: 2}
   _fxAudioSource: {fileID: 393561303}
   _musicAudioSource: {fileID: 657850609}
 --- !u!4 &579548381
@@ -2210,6 +2211,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 492cb9fd8a122914aa7ab6d754878680, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonSoundHandler
+--- !u!114 &579548383
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 579548377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 045377ea4a45dfe48b404110523c6ec6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MusicStarter
+  _audioEventDispatcher: {fileID: 11400000, guid: a971383d6ab22f043872a72cb5267f9e, type: 2}
 --- !u!1 &587205876
 GameObject:
   m_ObjectHideFlags: 0

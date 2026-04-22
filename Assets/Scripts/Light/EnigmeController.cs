@@ -20,6 +20,9 @@ public class EnigmeController : MonoBehaviour
     [SerializeField] private float blinkInterval = 0.08f;
     [SerializeField] private int blinkCycles = 5;
 
+    [Header("Audio")]
+    [SerializeField] private AudioEventDispatcher _audioEventDispatcher;
+
     private Coroutine _blinkCoroutine;
 
     private void Start()
@@ -78,6 +81,7 @@ public class EnigmeController : MonoBehaviour
             for (int i = 0; i < pointImages.Length; i++)
             {
                 pointImages[i].color = blinkColor;
+                _audioEventDispatcher?.PlayAudio(AudioType.TouchObject);
                 yield return new WaitForSeconds(blinkInterval);
                 pointImages[i].color = activeColor;
             }

@@ -12226,6 +12226,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DificultyManager
   _timeManager: {fileID: 1019146739}
   _spawner: {fileID: 99423307}
+  _scoreManager: {fileID: 1351911737}
   _initialTimeStep: 1
   _minTimeStep: 0.5
   _timeStepDecreaseAmount: 0.2

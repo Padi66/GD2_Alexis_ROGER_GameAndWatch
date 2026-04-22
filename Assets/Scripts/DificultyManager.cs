@@ -5,6 +5,7 @@ public class DificultyManager : MonoBehaviour
     [Header("References")]
     [SerializeField] private TimeManager _timeManager;
     [SerializeField] private Spawner _spawner;
+    [SerializeField] private ScoreManager _scoreManager;
 
     [Header("Time Step Settings")]
     [SerializeField] private float _initialTimeStep = 5f;
@@ -68,6 +69,7 @@ public class DificultyManager : MonoBehaviour
     {
         _speedMultiplier = 0.8f;
         _spawnMultiplier = 0.8f;
+        _scoreManager?.SetDifficulty("Facile");
         ApplyDifficulty();
     }
 
@@ -75,6 +77,7 @@ public class DificultyManager : MonoBehaviour
     {
         _speedMultiplier = 1f;
         _spawnMultiplier = 1f;
+        _scoreManager?.SetDifficulty("Normal");
         ApplyDifficulty();
     }
 
@@ -82,6 +85,7 @@ public class DificultyManager : MonoBehaviour
     {
         _speedMultiplier = 1.5f;
         _spawnMultiplier = 1.5f;
+        _scoreManager?.SetDifficulty("Difficile");
         ApplyDifficulty();
     }
 }

@@ -17,6 +17,9 @@ public class NumericKeyboard : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!TouchScreenKeyboard.isSupported)
+            return;
+
         _keyboard = TouchScreenKeyboard.Open(
             _inputField.text,
             TouchScreenKeyboardType.NumberPad,

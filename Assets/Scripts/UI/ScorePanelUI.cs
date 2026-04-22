@@ -12,6 +12,9 @@ public class ScorePanelUI : MonoBehaviour
     [SerializeField] private SO_ScoreDatas   _scoreDatas;
     [SerializeField] private SO_PlayersDatas _playersDatas;
 
+    [Header("Pseudo")]
+    [SerializeField] private TextMeshProUGUI _pseudoText;
+
     [Header("Jeu 1 - Dernier score")]
     [SerializeField] private TextMeshProUGUI _jeu1ScoreText;
     [SerializeField] private TextMeshProUGUI _jeu1DifficultyText;
@@ -49,9 +52,16 @@ public class ScorePanelUI : MonoBehaviour
         _playersDatas.LoadDatas();
         _scoreDatas.LoadScores(_playersDatas.Name);
 
+        RefreshPseudo();
         RefreshJeu1();
         RefreshJeu2();
         RefreshJeu3();
+    }
+
+    private void RefreshPseudo()
+    {
+        if (_pseudoText != null)
+            _pseudoText.text = string.IsNullOrWhiteSpace(_playersDatas.Name) ? "-" : _playersDatas.Name;
     }
 
     private void RefreshJeu1()
