@@ -1,11 +1,11 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 /// <summary>
-/// Panel affiché au démarrage.
-/// Le joueur saisit son pseudo, choisit sa classe via 2 images, puis confirme.
+/// Panel de sélection du joueur.
+/// Le joueur saisit son pseudo, choisit sa classe (Blanc ou Noir) via les boutons,
+/// puis confirme. Les images sont activées/désactivées selon la classe choisie.
 /// </summary>
 public class ClassSelectionPanel : MonoBehaviour
 {
@@ -16,39 +16,27 @@ public class ClassSelectionPanel : MonoBehaviour
     [Header("Pseudo")]
     [SerializeField] private TMP_InputField _nameInputField;
 
-    [Header("Image Hacker")]
-    [SerializeField] private Image _hackerImage;
-    [SerializeField] private Sprite _hackerSpriteNormal;
-    [SerializeField] private Sprite _hackerSpriteSelected;
+    [Header("Chevalier Blanc — ButtonWhite → SelectHacker()")]
+    [SerializeField] private GameObject _hackerOverlay;
 
-    [Header("Image Infiltrateur")]
-    [SerializeField] private Image _infiltrateurImage;
-    [SerializeField] private Sprite _infiltrateurSpriteNormal;
-    [SerializeField] private Sprite _infiltrateurSpriteSelected;
+    [Header("Chevalier Noir — ButtonBlack → SelectInfiltrateur()")]
+    [SerializeField] private GameObject _infiltrateurOverlay;
 
     [Header("Navigation")]
     [SerializeField] private Button _confirmButton;
 
     private PlayerClass _selectedClass = PlayerClass.Hacker;
-    private Vector2 _hackerImageSize;
-    private Vector2 _infiltrateurImageSize;
 
     private void Start()
     {
-        _hackerImageSize       = _hackerImage.GetComponent<RectTransform>().sizeDelta;
-        _infiltrateurImageSize = _infiltrateurImage.GetComponent<RectTransform>().sizeDelta;
-
         _playersDatas.LoadDatas();
-        _selectedClass = _playersDatas.Class;
+        _selectedClass       = _playersDatas.Class;
         _nameInputField.text = _playersDatas.Name;
 
-        AddClickHandler(_hackerImage,       () => SelectClass(PlayerClass.Hacker));
-        AddClickHandler(_infiltrateurImage, () => SelectClass(PlayerClass.Infiltrateur));
         _confirmButton.onClick.AddListener(Confirm);
 
         RefreshImages();
 
-        // Charge les scores du pseudo existant dès le démarrage.
         if (!string.IsNullOrWhiteSpace(_playersDatas.Name))
         {
             _scoreDatas?.LoadScores(_playersDatas.Name);
@@ -56,34 +44,37 @@ public class ClassSelectionPanel : MonoBehaviour
         }
     }
 
-    /// <summary>Sélectionne une classe et met à jour le sprite des images.</summary>
+    /// <summary>Sélectionne une classe et met à jour les images.</summary>
     public void SelectClass(PlayerClass playerClass)
     {
         _selectedClass = playerClass;
         RefreshImages();
     }
 
+    /// <summary>Sélectionne le chevalier Blanc — à câbler sur ButtonWhite.</summary>
+    public void SelectHacker() => SelectClass(PlayerClass.Hacker);
+
+    /// <summary>Sélectionne le chevalier Noir — à câbler sur ButtonBlack.</summary>
+    public void SelectInfiltrateur() => SelectClass(PlayerClass.Infiltrateur);
+
     /// <summary>Ouvre le panel.</summary>
-    public void Open()
-    {
-        gameObject.SetActive(true);
-    }
+    public void Open() => gameObject.SetActive(true);
+
+    /// <summary>Ferme le panel.</summary>
+    public void Close() => gameObject.SetActive(false);
 
     /// <summary>Valide le pseudo et la classe, sauvegarde et ferme le panel.</summary>
     public void Confirm()
     {
         if (string.IsNullOrWhiteSpace(_nameInputField.text)) return;
 
-        string newPseudo = _nameInputField.text.Trim();
+        string newPseudo   = _nameInputField.text.Trim();
         bool pseudoChanged = !string.Equals(newPseudo, _playersDatas.Name, System.StringComparison.OrdinalIgnoreCase);
 
         _playersDatas.Name  = newPseudo;
         _playersDatas.Class = _selectedClass;
         _playersDatas.SaveDatas();
 
-        // Si le pseudo a changé, on charge les scores du nouveau pseudo.
-        // S'il n'en a pas encore, les scores seront remis à zéro.
-        // Si le joueur remet son ancien pseudo, ses anciens scores seront restaurés.
         if (_scoreDatas != null && pseudoChanged)
             _scoreDatas.LoadScores(newPseudo);
         else
@@ -94,31 +85,7 @@ public class ClassSelectionPanel : MonoBehaviour
 
     private void RefreshImages()
     {
-        ApplyState(_hackerImage,       _hackerSpriteNormal,       _hackerSpriteSelected,       _selectedClass == PlayerClass.Hacker,       _hackerImageSize);
-        ApplyState(_infiltrateurImage, _infiltrateurSpriteNormal, _infiltrateurSpriteSelected, _selectedClass == PlayerClass.Infiltrateur, _infiltrateurImageSize);
-    }
-
-    private void ApplyState(Image image, Sprite normal, Sprite selected, bool isSelected, Vector2 originalSize)
-    {
-        if (image == null) return;
-        image.sprite = isSelected ? selected : normal;
-        image.GetComponent<RectTransform>().sizeDelta = originalSize;
-    }
-
-    private void AddClickHandler(Image image, System.Action onClick)
-    {
-        if (image == null) return;
-        image.raycastTarget = true;
-
-        EventTrigger trigger = image.gameObject.GetComponent<EventTrigger>();
-        if (trigger == null)
-            trigger = image.gameObject.AddComponent<EventTrigger>();
-
-        EventTrigger.Entry entry = new EventTrigger.Entry
-        {
-            eventID = EventTriggerType.PointerDown
-        };
-        entry.callback.AddListener(_ => onClick?.Invoke());
-        trigger.triggers.Add(entry);
+        if (_hackerOverlay      != null) _hackerOverlay.SetActive(_selectedClass == PlayerClass.Hacker);
+        if (_infiltrateurOverlay != null) _infiltrateurOverlay.SetActive(_selectedClass == PlayerClass.Infiltrateur);
     }
 }
