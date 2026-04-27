@@ -21,3 +21,30 @@ Concernant la narration (provisoire), le joueur pourra choisir d’incarner un h
 
 En ce qui concerne les inputs mobiles, l’UI a été réfléchie afin que chaque bouton soit accessible au joueur. Dans le premier mini-jeu, le joueur peut se déplacer en effectuant des swipes (glissements) au lieu d’appuyer sur des boutons.
 Enfin, le jeu se lance par défaut en mode paysage et empêche le passage en mode portrait.
+
+
+
+En ce qui concerne le deuxième jeu, il s’inspire des jeux d’arcade, avec un gameplay simple, mais propice à l’amélioration et à la répétition.
+
+Le joueur se retrouve face à huit lumières et huit boutons, chaque bouton étant associé à une lumière. Son objectif est d’allumer toutes les lumières dans le bon ordre. Le jeu repose donc sur un principe de mémoire.
+
+À chaque activation d’une lumière, la suivante doit être dans la continuité du cercle. Si ce n’est pas le cas, toutes les lumières s’éteignent et le joueur doit recommencer la séquence depuis le début.
+
+Le joueur devra ainsi mémoriser à quel bouton correspond chaque lumière afin de résoudre le puzzle.
+
+Le jeu possède une fin, mais un timer, qui varie selon la difficulté, peut inciter les joueurs à chercher à obtenir le meilleur score possible. De plus, les scores étant affichés dans le menu principal, il devient facile de constater sa progression et ses améliorations.
+
+
+Enfin, pour le troisième jeu, le hacker (le joueur) se retrouve face à une entité censée protéger le réseau. Il doit donc la vaincre afin d’accéder au code source du jeu.
+
+Le joueur évolue dans une grille et dispose d’une barre de vie, tout comme le boss. Il doit se déplacer en évitant les cases malus, qui lui font perdre du temps de vie (sa barre de vie diminuant progressivement avec le temps), tout en atteignant des cases de hack qui infligent des dégâts au boss.
+
+Heureusement, certaines cases bonus sont présentes dans la grille et permettent au joueur de regagner du temps afin de poursuivre la partie.
+
+Chaque fois qu’une grille est terminée soit parce que le joueur atteint une case de hack, soit parce que sa barre de vie tombe à zéro une nouvelle grille est générée aléatoirement. Le joueur doit alors répéter le même processus.
+
+Cependant, à chaque nouvelle grille complétée, la difficulté augmente : le joueur dispose de moins en moins de temps pour résoudre le puzzle.
+
+Une fois le boss vaincu, celui-ci explose, permettant au joueur d’atteindre la fin du jeu.
+
+Le jeu est rejouable : le joueur peut chercher à améliorer ses performances, notamment en réduisant le nombre de coups nécessaires pour venir à bout du boss. Il peut également choisir la difficulté, ce qui influencera les points de vie du boss ainsi que le temps minimal accordé pour compléter chaque grille.

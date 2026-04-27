@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 
 /// <summary>
@@ -14,6 +15,9 @@ public class ScorePanelUI : MonoBehaviour
 
     [Header("Pseudo")]
     [SerializeField] private TextMeshProUGUI _pseudoText;
+    [SerializeField] private Image           _classImage;
+    [SerializeField] private Sprite          _spriteHacker;
+    [SerializeField] private Sprite          _spriteInfiltrateur;
 
     [Header("Jeu 1 - Dernier score")]
     [SerializeField] private TextMeshProUGUI _jeu1ScoreText;
@@ -62,6 +66,18 @@ public class ScorePanelUI : MonoBehaviour
     {
         if (_pseudoText != null)
             _pseudoText.text = string.IsNullOrWhiteSpace(_playersDatas.Name) ? "-" : _playersDatas.Name;
+
+        if (_classImage != null)
+        {
+            bool hasClass = _playersDatas.Class == PlayerClass.Hacker
+                ? _spriteHacker      != null
+                : _spriteInfiltrateur != null;
+
+            _classImage.enabled = hasClass;
+            _classImage.sprite  = _playersDatas.Class == PlayerClass.Hacker
+                ? _spriteHacker
+                : _spriteInfiltrateur;
+        }
     }
 
     private void RefreshJeu1()
