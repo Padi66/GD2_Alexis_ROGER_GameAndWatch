@@ -48,3 +48,10 @@ Cependant, à chaque nouvelle grille complétée, la difficulté augmente : le j
 Une fois le boss vaincu, celui-ci explose, permettant au joueur d’atteindre la fin du jeu.
 
 Le jeu est rejouable : le joueur peut chercher à améliorer ses performances, notamment en réduisant le nombre de coups nécessaires pour venir à bout du boss. Il peut également choisir la difficulté, ce qui influencera les points de vie du boss ainsi que le temps minimal accordé pour compléter chaque grille.
+
+
+
+Au cas où les codes sont :
+Jeu1=1234
+Jeu2=1548
+Jeu3=5555
