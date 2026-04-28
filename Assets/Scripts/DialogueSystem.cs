@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
 [Serializable]
@@ -13,7 +14,7 @@ public struct DialogueLine
     public Sprite speakerPortrait;
 }
 
-public class DialogueSystem : MonoBehaviour
+public class DialogueSystem : MonoBehaviour, IPointerClickHandler
 {
     [Header("UI")]
     public GameObject dialoguePanel;
@@ -32,11 +33,20 @@ public class DialogueSystem : MonoBehaviour
     public event Action OnSequenceComplete;
 
     private Coroutine _sequenceCoroutine;
+    private bool _skipRequested = false;
+    private bool _isTyping      = false;
+    private string _currentFullText = string.Empty;
 
     private void Awake()
     {
         if (dialoguePanel != null)
             dialoguePanel.SetActive(false);
+    }
+
+    /// <summary>Appelé par le système d'événements Unity quand l'utilisateur clique/touche le panel.</summary>
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        _skipRequested = true;
     }
 
     /// <summary>Démarre une séquence de dialogues. Déclenche OnSequenceComplete et onComplete à la fin.</summary>
@@ -69,29 +79,47 @@ public class DialogueSystem : MonoBehaviour
 
     private IEnumerator RunSequence(DialogueLine[] lines, Action onComplete)
     {
-        // Vide le texte avant d'afficher quoi que ce soit
-        if (speakerNameText != null)
-            speakerNameText.text = string.Empty;
-
-        if (dialogueText != null)
-            dialogueText.text = string.Empty;
-
-        if (dialoguePanel != null)
-            dialoguePanel.SetActive(true);
+        if (speakerNameText != null) speakerNameText.text = string.Empty;
+        if (dialogueText    != null) dialogueText.text    = string.Empty;
+        if (dialoguePanel   != null) dialoguePanel.SetActive(true);
 
         yield return new WaitForSeconds(initialDelay);
 
         foreach (DialogueLine line in lines)
         {
+            _skipRequested = false;
+
             yield return StartCoroutine(DisplayLine(line));
-            yield return new WaitForSeconds(displayDuration);
+
+            // Si le typewriter n'est pas encore terminé, afficher le texte complet
+            if (_isTyping)
+            {
+                _isTyping = false;
+                if (dialogueText != null)
+                    dialogueText.text = _currentFullText;
+                _skipRequested = false;
+
+                // Attendre un second appui pour passer à la ligne suivante
+                yield return new WaitUntil(() => _skipRequested);
+            }
+            else
+            {
+                // Attendre soit la durée automatique soit un appui
+                float elapsed = 0f;
+                while (elapsed < displayDuration && !_skipRequested)
+                {
+                    elapsed += Time.deltaTime;
+                    yield return null;
+                }
+            }
+
+            _skipRequested = false;
         }
 
         CloseDialogue();
         onComplete?.Invoke();
         OnSequenceComplete?.Invoke();
     }
-
 
     private IEnumerator DisplayLine(DialogueLine line)
     {
@@ -106,14 +134,24 @@ public class DialogueSystem : MonoBehaviour
 
         if (dialogueText != null)
         {
-            dialogueText.text = string.Empty;
-            float delay = 1f / typingSpeed;
+            _currentFullText     = line.text;
+            dialogueText.text    = string.Empty;
+            float delay          = 1f / typingSpeed;
+            _isTyping            = true;
 
             foreach (char c in line.text)
             {
+                if (_skipRequested)
+                {
+                    _isTyping = false;
+                    yield break;
+                }
+
                 dialogueText.text += c;
                 yield return new WaitForSeconds(delay);
             }
+
+            _isTyping = false;
         }
     }
 

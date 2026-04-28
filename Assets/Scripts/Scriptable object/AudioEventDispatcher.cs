@@ -20,7 +20,8 @@ public enum AudioType
     HackNodeMalus,
     HackNodeGoal,
     BossExplosion,
-    BossFall
+    BossFall,
+    PlayerError
 }
 
 [System.Serializable]
@@ -28,6 +29,7 @@ public struct AudioInfos
 {
     public AudioType audioType;
     public AudioClip audioClip;
+    [Range(0f, 5f)] public float volume;
 }
 
 [CreateAssetMenu(fileName = "AudioEventDispatcher", menuName = "Scriptable Objects/AudioEventDispatcher")]
@@ -35,7 +37,7 @@ public class AudioEventDispatcher : ScriptableObject
 {
     [SerializeField] private AudioInfos[] audioClips;
 
-    public event Action<AudioClip> OnAudioEvent;
+    public event Action<AudioClip, float> OnAudioEvent;
     public event Action<AudioClip> OnMusicEvent;
 
     public void PlayAudio(AudioType audioType)
@@ -44,13 +46,15 @@ public class AudioEventDispatcher : ScriptableObject
         {
             if (audioClips[i].audioType == audioType)
             {
+                float volume = audioClips[i].volume > 0f ? audioClips[i].volume : 1f;
+
                 if (audioType == AudioType.BackgroundMusic)
                 {
                     OnMusicEvent?.Invoke(audioClips[i].audioClip);
                 }
                 else
                 {
-                    OnAudioEvent?.Invoke(audioClips[i].audioClip);
+                    OnAudioEvent?.Invoke(audioClips[i].audioClip, volume);
                 }
                 return;
             }

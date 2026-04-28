@@ -200,7 +200,7 @@ public class PuzzleCircle : MonoBehaviour
             currentTarget = lightIndex;
             lights[currentTarget].color = activeColor;
             lightsActivated = 1;
-            _audioEventDispatcher?.PlayAudio(AudioType.TouchObject);
+            _audioEventDispatcher?.PlayAudio(AudioType.ButtonClick);
             return;
         }
 
@@ -211,7 +211,7 @@ public class PuzzleCircle : MonoBehaviour
             currentTarget = nextTarget;
             lights[currentTarget].color = activeColor;
             lightsActivated++;
-            _audioEventDispatcher?.PlayAudio(AudioType.TouchObject);
+            _audioEventDispatcher?.PlayAudio(AudioType.ButtonClick);
 
             if (lightsActivated >= 8)
             {

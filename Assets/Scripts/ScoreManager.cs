@@ -20,6 +20,8 @@ public class ScoreManager : MonoBehaviour
     [SerializeField] private string _difficulty = "Normal";
 
     public event Action<int> OnScoreChanged;
+    /// <summary>Fired with the amount of points added (e.g. 10), before OnScoreChanged.</summary>
+    public event Action<int> OnScoreAdded;
     public event Action<string> OnMilestoneReached;
 
     public int CurrentScore => _currentScore;
@@ -38,6 +40,7 @@ public class ScoreManager : MonoBehaviour
         Debug.Log($"Score ajouté: +{points}. Score total: {_currentScore}");
         _audioEventDispatcher?.PlayAudio(AudioType.TouchObject);
 
+        OnScoreAdded?.Invoke(points);
         OnScoreChanged?.Invoke(_currentScore);
         CheckMilestones();
     }

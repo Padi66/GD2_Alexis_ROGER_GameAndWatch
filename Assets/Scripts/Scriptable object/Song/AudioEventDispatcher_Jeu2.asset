@@ -15,11 +15,19 @@ MonoBehaviour:
   audioClips:
   - audioType: 9
     audioClip: {fileID: 8300000, guid: 5e7e23f095f086f40819a485d2bf1cc7, type: 3}
+    volume: 1
   - audioType: 7
     audioClip: {fileID: 8300000, guid: a66ef6c3f977d5c48ba78a17201fb5b1, type: 3}
+    volume: 1
   - audioType: 4
     audioClip: {fileID: 8300000, guid: ef06afe8a8de6b348973a905dced15f6, type: 3}
+    volume: 1
   - audioType: 5
     audioClip: {fileID: 8300000, guid: 4e5bb746bebf05e43a421fb083bba6f4, type: 3}
+    volume: 1
   - audioType: 8
     audioClip: {fileID: 8300000, guid: 0569620c08a82dc418ef11add4b11f28, type: 3}
+    volume: 1
+  - audioType: 17
+    audioClip: {fileID: 8300000, guid: dc69c1fba911c8d4ab477c9b80a783ec, type: 3}
+    volume: 4

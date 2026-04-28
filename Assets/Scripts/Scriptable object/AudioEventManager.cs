@@ -18,9 +18,9 @@ public class AudioEventManager : MonoBehaviour
         _audioEventDispatcher.OnMusicEvent -= PlayMusic;
     }
 
-    private void PlayAudioFX(AudioClip clip)
+    private void PlayAudioFX(AudioClip clip, float volume)
     {
-        _fxAudioSource.PlayOneShot(clip);
+        _fxAudioSource.PlayOneShot(clip, volume);
     }
 
     private void PlayMusic(AudioClip clip)
